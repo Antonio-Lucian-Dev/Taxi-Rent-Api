@@ -36,13 +36,14 @@ public class RegistrationService {
         String token =  userService.signUpUser(
                 user
         );
-        String link = "http://localhost:8081/api/v1/confirm?token=" + token;
+        String link = "http://localhost:8081/api/v1/registration/confirm?token=" + token;
         emailSender.send(registrationRequest.getEmail(), buildEmail(registrationRequest.getFirstName(), link));
         return token;
     }
 
     @Transactional
     public String confirmToken(String token) {
+        System.out.println(token);
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
