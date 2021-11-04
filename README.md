@@ -1,6 +1,5 @@
 # Taxi Rent Api
 ![alt text](https://github.com/Antonio-Lucian-Dev/Taxi-Rent-Api/blob/main/src/main/resources/static/logo.png?raw=true)
-
 # Back-end
 - Version: 0.0.1
 # Features
