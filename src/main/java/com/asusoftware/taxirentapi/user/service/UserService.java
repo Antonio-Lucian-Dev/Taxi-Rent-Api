@@ -1,6 +1,7 @@
 package com.asusoftware.taxirentapi.user.service;
 
 import com.asusoftware.taxirentapi.registration.token.model.ConfirmationToken;
+import com.asusoftware.taxirentapi.registration.token.service.ConfirmationTokenService;
 import com.asusoftware.taxirentapi.user.model.User;
 import com.asusoftware.taxirentapi.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ConfirmationTokenService confirmationTokenService;
 
     // E usato per il login, come trovare gli users quando provano a fare login
     @Override
@@ -37,13 +39,14 @@ public class UserService implements UserDetailsService {
         // Salviamo la pssword convertita con bcrypt su quel specifico user
         user.setPassword(encodedPassword);
         userRepository.save(user);
-        // TODO: send confirmation token
         String token = UUID.randomUUID().toString();
         ConfirmationToken confirmationToken = new ConfirmationToken();
         confirmationToken.setToken(token);
         confirmationToken.setCreatedAt(LocalDateTime.now());
         confirmationToken.setConfirmedAt(LocalDateTime.now().plusMinutes(15));
         confirmationToken.setUser(user);
-        return "It works";
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+        // TODO: Send email
+        return token;
     }
 }

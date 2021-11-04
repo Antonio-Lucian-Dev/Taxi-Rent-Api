@@ -14,6 +14,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
+@Table(name = "confirmation_token")
 public class ConfirmationToken {
 
     @Id
