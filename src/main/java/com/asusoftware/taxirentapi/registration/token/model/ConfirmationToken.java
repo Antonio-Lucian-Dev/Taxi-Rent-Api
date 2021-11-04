@@ -34,7 +34,6 @@ public class ConfirmationToken {
     @Column(name = "expired_at")
     private LocalDateTime expiredAt;
 
-    @NotNull
     @Column(name = "confirmed_at")
     private LocalDateTime confirmedAt;
 

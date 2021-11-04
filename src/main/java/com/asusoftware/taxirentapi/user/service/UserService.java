@@ -32,6 +32,8 @@ public class UserService implements UserDetailsService {
         boolean isUserExist = userRepository.findByEmail(user.getEmail())
                 .isPresent();
         if(isUserExist) {
+            // TODO: check of attributes are the same(if is the same user trying to access
+            // TODO: if email not confirmed send confirmation email
             throw new IllegalStateException("Email already taken");
         }
         // Convertiamo la password del user con bcrypt
@@ -43,7 +45,7 @@ public class UserService implements UserDetailsService {
         ConfirmationToken confirmationToken = new ConfirmationToken();
         confirmationToken.setToken(token);
         confirmationToken.setCreatedAt(LocalDateTime.now());
-        confirmationToken.setConfirmedAt(LocalDateTime.now().plusMinutes(15));
+        confirmationToken.setExpiredAt(LocalDateTime.now().plusMinutes(15));
         confirmationToken.setUser(user);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
         // TODO: Send email
@@ -51,6 +53,7 @@ public class UserService implements UserDetailsService {
     }
 
     public int enableAppUser(String email) {
+        System.out.println("Intra " + email);
         return userRepository.enableUser(email);
     }
 }
